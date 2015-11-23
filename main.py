@@ -34,17 +34,27 @@ def get_file_list(directory, recurse):
 		# if the last character in the directory name is a '/', don't readd it to the file path
 		if directory[-1:] == "/":
 			for f in filenames:
-				files.append(directory + f)
+				if os.path.isdir(f) is not True:
+					files.append(directory + f)
 		else:
 			for f in filenames:
-				files.append(directory + "/" + f)
+				if os.path.isdir(f) is not True:
+					files.append(directory + "/" + f)
 
 	# if directory recursion is requested
 	elif recurse == True:
 		print "Recurse true"
-		for root, dirs, filename in os.walk(directory):
-			for f in filename:
-				files.append(root + "/" + f)
+		for root, dirs, filenames in os.walk(directory):
+			#for f in filenames:
+			#	print root + f
+			if root[-1:] == "/":
+				for f in filenames:
+					if os.path.isdir(f) is not True:
+						files.append(root + f)
+			else:
+				for f in filenames:
+					if os.path.isdir(f) is not True:
+						files.append(root + "/" + f)
 
 	else:
 		print "Something weird happened."
