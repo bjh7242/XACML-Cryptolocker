@@ -25,10 +25,21 @@ def get_file_list(directory, recurse):
 	will recurse, if desired
 	"""
 	files = []
-	
+	print "directory[-1:] = " + directory[-1:]
+
+	# if directory recursion is not requested
 	if recurse == False:
 		print "Recurse false"
+		filenames = os.listdir(directory)
+		# if the last character in the directory name is a '/', don't readd it to the file path
+		if directory[-1:] == "/":
+			for f in filenames:
+				files.append(directory + f)
+		else:
+			for f in filenames:
+				files.append(directory + "/" + f)
 
+	# if directory recursion is requested
 	elif recurse == True:
 		print "Recurse true"
 		for root, dirs, filename in os.walk(directory):
