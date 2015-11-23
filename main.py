@@ -29,6 +29,12 @@ def main():
 	args = parser.parse_args()
 
 	# if args.action != 'encrypt' and args.action != 'decrypt', throw an error
+	if args.action != "encrypt" and args.action != "decrypt":
+		print "ERROR: -a must specify either 'encrypt' or 'decrypt' as an argument"
+		sys.exit(1)
+
+	
+	return 0
 
 
 if __name__ == '__main__':
