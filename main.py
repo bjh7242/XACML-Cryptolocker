@@ -31,12 +31,15 @@ def get_file_list(directory, recurse):
 
 	elif recurse == True:
 		print "Recurse true"
+		for root, dirs, filename in os.walk(directory):
+			for f in filename:
+				files.append(root + "/" + f)
 
 	else:
 		print "Something weird happened."
 		sys.exit(1)
 
-
+	print files
 	return files
 
 def main():
