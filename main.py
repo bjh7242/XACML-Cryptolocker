@@ -3,21 +3,8 @@
 import os
 import sys
 import argparse
+from rc4 import rc4
 
-
-def encrypt(files):
-	"""
-	This function encrypts the specified file using RC4
-	Args: list of files to encrypt
-	"""
-	pass
-
-def decrypt(files):
-	"""
-	This function decrypts the specified file that was encrypted using RC4
-	Args: list of files to decrypt
-	"""
-	pass
 
 def get_file_list(directory, recurse):
 	"""
@@ -60,7 +47,6 @@ def get_file_list(directory, recurse):
 		print "Something weird happened."
 		sys.exit(1)
 
-	print files
 	return files
 
 def main():
@@ -74,11 +60,13 @@ def main():
 	# if args.action is neither 'encrypt' nor 'decrypt', throw an error
 	if args.action == "encrypt":
 		print "Encrypting files..."
-		encrypt(get_file_list(args.directory, args.recurse))
+		files = get_file_list(args.directory, args.recurse)
+		for f in files:
+			print f
 
 	elif args.action == "decrypt":
 		print "Decrypting files..."
-		decrypt(get_file_list(args.directory, args.recurse))
+		files = get_file_list(args.directory, args.recurse)
 
 	# else, if neither argument is specified, throw an error
 	else:
