@@ -76,7 +76,7 @@ def main():
 			if f[-4:] == ".enc":
 				if args.verbose:
 					print "Decrypting " + f
-				r.rc4main(f,f[-4:])
+				r.rc4main(f,f[:-4])
 
 	# else, if neither argument is specified, throw an error
 	else:
