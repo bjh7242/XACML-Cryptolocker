@@ -69,12 +69,12 @@ def main():
 					print "Encrypting " + f
 				enc_file = f + ".enc"
 				# encrypt the files
-				#r.rc4main(f,enc_file)
+				r.rc4main(f,enc_file)
 				# if requested, delete the original files
 				if args.cleanup:
 					if args.verbose:
 						print "Deleting " + f
-					#os.remove(f)
+					os.remove(f)
 
 	elif args.action == "decrypt":
 		if args.verbose:
