@@ -48,12 +48,13 @@ def main():
 	parser = argparse.ArgumentParser(description='Encrypt and decrypt specified files')
 	parser.add_argument('-D', help='Directory to start encrypting files in', dest="directory", required="True")
 	parser.add_argument('-R', help='Specify whether to recurse down directories', dest="recurse", action="store_true", default=False)
-	parser.add_argument('-a', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
+	parser.add_argument('-A', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
+	parser.add_argument('-K', help='The key to use with the RC4 cipher', dest="key", required="True")
 	parser.add_argument('-V', help='Verbose output', dest="verbose", action="store_true", default=False)
 
 	args = parser.parse_args()
-	r = rc4()
-	r.key = 'Key2'
+	r = rc4()			# initialize the rc4 class object (r)
+	r.key = args.key	# set the key for the object to be the value from the command line
 
 	# if args.action is neither 'encrypt' nor 'decrypt', throw an error
 	if args.action == "encrypt":
