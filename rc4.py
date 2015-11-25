@@ -9,7 +9,7 @@ import binascii
 class rc4:
 	""" Class for RC4"""
 
-	def KSA(key):
+	def KSA(self,key):
 		"""
 			Completes the key-scheduling algorithm
 		"""
@@ -24,7 +24,7 @@ class rc4:
 	
 		return S
 	
-	def PRGA(S):
+	def PRGA(self,S):
 		"""
 			Completes the pseudo-random generation algorithm
 		"""
@@ -38,25 +38,25 @@ class rc4:
 			K = S[(S[i] + S[j]) % 256]
 			yield K
 	
-	def RC4(key):
+	def RC4(self,key):
 		"""
 			Runs both parts of the RC4 cipher
 		"""
-		S = KSA(key)
-		return PRGA(S)
+		S = self.KSA(key)
+		return self.PRGA(S)
 	
-	def convert_key(s):
+	def convert_key(self,key):
 		"""
 			Returns the decimal value of the characters in the key
 		"""
-		return [ord(c) for c in s]
+		return [ord(c) for c in key]
 
 	def __init__(self):
 		self.key = 'Key'	# default key is 'Key'
 		self.infile = ''
 		self.outfile = ''
 	
-	def rc4main(infile,outfile):
+	def rc4main(self,infile,outfile):
 		"""
 			Starts the main processing of RC4 for the specified file (infile)
 			Writes out the encrypted result to (outfile)
@@ -68,10 +68,10 @@ class rc4:
 			plaintext = f.read()
 		
 		# key is a list containing the key
-		key = convert_key(key)
+		key = self.convert_key(self.key)
 	
 		# this is a generator variable
-		keystream = RC4(key)
+		keystream = self.RC4(key)
 	
 		# open the file to write the encrypted contents to
 		f = open(outfile,"wb")
