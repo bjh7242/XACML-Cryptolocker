@@ -5,18 +5,16 @@ import sys
 import argparse
 from rc4 import rc4
 
-
 def get_file_list(directory, recurse):
 	"""
 	This function returns a list of files based off of the given directory and 
 	will recurse, if desired
 	"""
 	files = []
-	print "directory[-1:] = " + directory[-1:]
+	#print "directory[-1:] = " + directory[-1:]
 
 	# if directory recursion is not requested
 	if recurse == False:
-		print "Recurse false"
 		filenames = os.listdir(directory)
 		# if the last character in the directory name is a '/', don't readd it to the file path
 		if directory[-1:] == "/":
@@ -30,10 +28,7 @@ def get_file_list(directory, recurse):
 
 	# if directory recursion is requested
 	elif recurse == True:
-		print "Recurse true"
 		for root, dirs, filenames in os.walk(directory):
-			#for f in filenames:
-			#	print root + f
 			if root[-1:] == "/":
 				for f in filenames:
 					if os.path.isdir(f) is not True:
@@ -54,19 +49,33 @@ def main():
 	parser.add_argument('-D', help='Directory to start encrypting files in', dest="directory", required="True")
 	parser.add_argument('-R', help='Specify whether to recurse down directories', dest="recurse", action="store_true", default=False)
 	parser.add_argument('-a', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
+	parser.add_argument('-V', help='Verbose output', dest="verbose", action="store_true", default=False)
 
 	args = parser.parse_args()
+	r = rc4()
+	r.key = 'Key2'
 
 	# if args.action is neither 'encrypt' nor 'decrypt', throw an error
 	if args.action == "encrypt":
-		print "Encrypting files..."
+		if args.verbose:
+			print "Encrypting files..."
 		files = get_file_list(args.directory, args.recurse)
 		for f in files:
-			print f
+			# add ".enc" to the end of each encrypted file
+			if args.verbose:
+				print "Encrypting " + f
+			enc_file = f + ".enc"
+			r.rc4main(f,enc_file)
 
 	elif args.action == "decrypt":
-		print "Decrypting files..."
+		if args.verbose:
+			print "Decrypting files..."
 		files = get_file_list(args.directory, args.recurse)
+		for f in files:
+			if f[-4:] == ".enc":
+				if args.verbose:
+					print "Decrypting " + f
+				r.rc4main(f,f[-4:])
 
 	# else, if neither argument is specified, throw an error
 	else:
