@@ -16,6 +16,8 @@ class auth:
 		"""
 			Perform username and password authentication for a user
 			Returns True for successful authentication, False for unsuccessful
+			Shadow file format:
+				username:password hash:date last pass change:min password age:max pass age:pass warning period:pass inactivity period:account expeiration date:reserved field
 		"""
 		self.username = raw_input("Enter Username: ")
 		password = getpass.getpass("Enter Password: ")
