@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 from rc4 import rc4
+from auth import auth
 
 def get_file_list(directory, recurse):
 	"""
@@ -43,19 +44,7 @@ def get_file_list(directory, recurse):
 
 	return files
 
-def main():
-	parser = argparse.ArgumentParser(description='Encrypt and decrypt specified files')
-	parser.add_argument('-D', help='Directory to start encrypting files in', dest="directory", required="True")
-	parser.add_argument('-R', help='Specify whether to recurse down directories', dest="recurse", action="store_true", default=False)
-	parser.add_argument('-A', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
-	parser.add_argument('-K', help='The key to use with the RC4 cipher', dest="key", required="True")
-	parser.add_argument('-C', help='Clean up (delete) the input files (default no)', dest="cleanup", action="store_true", default=False)
-	parser.add_argument('-V', help='Verbose output', dest="verbose", action="store_true", default=False)
-
-	args = parser.parse_args()
-	r = rc4()			# initialize the rc4 class object (r)
-	r.key = args.key	# set the key for the object to be the value from the command line
-
+def perform_action(args):
 	# if args.action is neither 'encrypt' nor 'decrypt', throw an error
 	if args.action == "encrypt":
 		if args.verbose:
@@ -97,6 +86,32 @@ def main():
 		sys.exit(1)
 
 	return 0
+
+
+def main():
+	parser = argparse.ArgumentParser(description='Encrypt and decrypt specified files')
+	parser.add_argument('-D', help='Directory to start encrypting files in', dest="directory", required="True")
+	parser.add_argument('-R', help='Specify whether to recurse down directories', dest="recurse", action="store_true", default=False)
+	parser.add_argument('-A', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
+	parser.add_argument('-K', help='The key to use with the RC4 cipher', dest="key", required="True")
+	parser.add_argument('-C', help='Clean up (delete) the input files (default no)', dest="cleanup", action="store_true", default=False)
+	parser.add_argument('-V', help='Verbose output', dest="verbose", action="store_true", default=False)
+
+	args = parser.parse_args()
+
+	# perform authentication
+	login = auth()
+	login.attempt_login()
+	print login.login
+	
+	if login.login == False:
+		print "Unsuccessful login."
+		sys.exit(1)
+
+	r = rc4()			# initialize the rc4 class object (r)
+	r.key = args.key	# set the key for the object to be the value from the command line
+	perform_action(args)
+
 
 
 if __name__ == '__main__':

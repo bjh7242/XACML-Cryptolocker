@@ -8,6 +8,9 @@ import hashlib
 import os
 
 class auth:
+	login = False
+	username = ''
+	passhash = ''
 
 	def attempt_login(self):
 		"""
@@ -57,9 +60,4 @@ class auth:
 		sha512 = hashlib.sha512()
 		sha512.update(password)
 		return sha512.hexdigest()
-
-	def __init__(self):
-		login = False
-		username = ''
-		passhash = ''
 
