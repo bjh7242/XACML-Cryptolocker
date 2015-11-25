@@ -18,6 +18,7 @@ class auth:
 			Returns True for successful authentication, False for unsuccessful
 			Shadow file format:
 				username:password hash:date last pass change:min password age:max pass age:pass warning period:pass inactivity period:account expeiration date:reserved field
+				Note: the 'reserved field' contains the roles for each user (used for the XACML permissions)
 		"""
 		self.username = raw_input("Enter Username: ")
 		password = getpass.getpass("Enter Password: ")
