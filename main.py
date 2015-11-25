@@ -49,7 +49,7 @@ def main():
 	parser.add_argument('-R', help='Specify whether to recurse down directories', dest="recurse", action="store_true", default=False)
 	parser.add_argument('-A', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
 	parser.add_argument('-K', help='The key to use with the RC4 cipher', dest="key", required="True")
-	parser.add_argument('-C', help='Clean up (delete) the original unencrypted files (default no)', dest="cleanup", action="store_true", default=False)
+	parser.add_argument('-C', help='Clean up (delete) the input files (default no)', dest="cleanup", action="store_true", default=False)
 	parser.add_argument('-V', help='Verbose output', dest="verbose", action="store_true", default=False)
 
 	args = parser.parse_args()
@@ -84,7 +84,12 @@ def main():
 			if f[-4:] == ".enc":
 				if args.verbose:
 					print "Decrypting " + f
+				# method call to decrypt the files
 				r.rc4main(f,f[:-4])
+				if args.cleanup:
+					if args.verbose:
+						print "Deleting " + f
+					os.remove(f)
 
 	# else, if neither argument is specified, throw an error
 	else:
