@@ -11,7 +11,6 @@ def get_file_list(directory, recurse):
 	will recurse, if desired
 	"""
 	files = []
-	#print "directory[-1:] = " + directory[-1:]
 
 	# if directory recursion is not requested
 	if recurse == False:
@@ -50,6 +49,7 @@ def main():
 	parser.add_argument('-R', help='Specify whether to recurse down directories', dest="recurse", action="store_true", default=False)
 	parser.add_argument('-A', help='Action to perform [encrypt/decrypt]', dest="action", required="True")
 	parser.add_argument('-K', help='The key to use with the RC4 cipher', dest="key", required="True")
+	parser.add_argument('-C', help='Clean up (delete) the original unencrypted files (default no)', dest="cleanup", action="store_true", default=False)
 	parser.add_argument('-V', help='Verbose output', dest="verbose", action="store_true", default=False)
 
 	args = parser.parse_args()
@@ -62,11 +62,19 @@ def main():
 			print "Encrypting files..."
 		files = get_file_list(args.directory, args.recurse)
 		for f in files:
-			# add ".enc" to the end of each encrypted file
-			if args.verbose:
-				print "Encrypting " + f
-			enc_file = f + ".enc"
-			r.rc4main(f,enc_file)
+			# don't run on already encrypted files, it will decrypt them
+			if f[-4:] != ".enc":
+				# add ".enc" to the end of each encrypted file
+				if args.verbose:
+					print "Encrypting " + f
+				enc_file = f + ".enc"
+				# encrypt the files
+				#r.rc4main(f,enc_file)
+				# if requested, delete the original files
+				if args.cleanup:
+					if args.verbose:
+						print "Deleting " + f
+					#os.remove(f)
 
 	elif args.action == "decrypt":
 		if args.verbose:
