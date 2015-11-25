@@ -45,6 +45,9 @@ def get_file_list(directory, recurse):
 	return files
 
 def perform_action(args):
+	r = rc4()			# initialize the rc4 class object (r)
+	r.key = args.key	# set the key for the object to be the value from the command line
+
 	# if args.action is neither 'encrypt' nor 'decrypt', throw an error
 	if args.action == "encrypt":
 		if args.verbose:
@@ -102,14 +105,12 @@ def main():
 	# perform authentication
 	login = auth()
 	login.attempt_login()
-	print login.login
 	
+	# if the login creds were not correct, exit the program
 	if login.login == False:
 		print "Unsuccessful login."
 		sys.exit(1)
 
-	r = rc4()			# initialize the rc4 class object (r)
-	r.key = args.key	# set the key for the object to be the value from the command line
 	perform_action(args)
 
 
