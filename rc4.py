@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-# modified from https://github.com/bozhu/RC4-Python
-# test vectors are from http://en.wikipedia.org/wiki/RC4
+"""
+modified from https://github.com/bozhu/RC4-Python
+test vectors are from http://en.wikipedia.org/wiki/RC4
+"""
 
 import binascii
 
@@ -58,7 +60,10 @@ class rc4:
 		"""
 			Starts the main processing of RC4 for the specified file (infile)
 			Writes out the encrypted result to (outfile)
+			Args: strings for the filenames for the in and out files
 		"""
+		
+		# read the infile in
 		with open(infile,"rb") as f:
 			plaintext = f.read()
 		
