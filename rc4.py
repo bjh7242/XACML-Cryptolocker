@@ -40,37 +40,31 @@ def convert_key(s):
 
 
 if __name__ == '__main__':
+	# add .enc to filename to write the encrypted file to
 	enc_file = sys.argv[1] + ".enc"
+	key = 'Key'		# key for RC4
 
 	with open(sys.argv[1],"rb") as f:
 		plaintext = f.read()
 	
-	#print data
-	# ciphertext should be BBF316E8D940AF0AD3
-	key = 'Key'
-	#plaintext = 'Plaintext'
 
 	# key is a list containing the key
 	key = convert_key(key)
 
 	# this is a generator variable
 	keystream = RC4(key)
+
+	# open the file to write the encrypted contents to
 	f = open(enc_file,"wb")
-	#hexval = []
+
 	for c in plaintext:
-		#print "ord(c) = " + str(ord(c))
-		#print "keystream.next() = " + str(keystream.next())
 		val = str(hex(ord(c) ^ keystream.next())).split('x')[1]
+		# if the hex value only has one character (ex. 0x9), add a 0 before it
+		# this fixes the binascii "odd length string" error
 		if 1 == len(val):
 			val = "0" + str(val)
-		#hexval.append(val)
 		f.write(binascii.a2b_hex(val))
 	
-	#f.write(binascii.unhexlify(''.join(hexval)))
 
-	#print hexval
 	f.close()
 
-#	for c in plaintext:
-#		sys.stdout.write("%02X" % (ord(c) ^ keystream.next()))
-#	print
