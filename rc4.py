@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 """
 modified from https://github.com/bozhu/RC4-Python
-test vectors are from http://en.wikipedia.org/wiki/RC4
 """
 
 import binascii
