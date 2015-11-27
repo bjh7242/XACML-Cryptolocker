@@ -106,6 +106,8 @@ def main():
 	login = auth()
 	login.attempt_login()
 	
+	# check authorization for requested action here (attacker can encrypt, admin can enc/dec, etc)
+	
 	# if the login creds were not correct, exit the program
 	if login.login == False:
 		print "Unsuccessful login."
