@@ -6,13 +6,20 @@
    PolicyId="admin:user"
    Version="1.0"
    RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
-  <Description>Access rights for users in the 'admin' group</Description>
+  <Description>Access rights for users to encrypt or decrypt files</Description>
   <!--Rule to determine whether authenticated users have the ability to encrypt-->
   <Rule RuleId="Encrypt" Effect="Permit">
     <Target>
       <!--Groups that can encrypt: 'admin' and 'attacker' -->
       <Subjects>
-        <AnySubjects/>
+        <Subject>
+          <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+        </Subject>
+        <Subject>
+          <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">attacker</AttributeValue>
+        </Subject>
       <Subjects>
       <!-- any files can be encrypted -->
       <Resources>
@@ -26,7 +33,5 @@
         </Action>
       </Actions>
     </Target>
-    <Condition>
-    </Condition>
   </Rule>
 </Policy>
