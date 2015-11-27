@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- based on: https://www.oasis-open.org/committees/download.php/2713/Brief_Introduction_to_XACML.html#xacml-example-->
+<PolicySet xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 xacml-core-v3-schema-wd-17.xsd" 
+   PolicyId="admin:user"
+   Version="1.0"
+   RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+  <Description>Access rights for users in the 'admin' group</Description>
+  <Target>
+    <Subjects>
+      <Subject>
+        <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+      </Subject>
+    <Subjects>
+  </Target>
+  <Condition>
+  </Condition>
+</PolicySet>
