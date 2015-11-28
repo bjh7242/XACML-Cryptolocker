@@ -7,16 +7,15 @@ import xml.etree.ElementTree
 import sys
 
 class xacmlparser:
-	def parse_file(self):
-		pass
 	
-	def parse_encrypt(self,root,group):
+	def parse_action(self,root,group,action):
 		"""
 			Determines whether a user is authorized to encrypt files
 			@root - an xml.etree.ElementTree.parse(xacmlfile).getroot() object
 			@group - the name of the group that the user is a member of (from shadow file)
+			@action - the action to perform (encrypt/decrypt)
 		"""
-		eligible = False	# initialize variable to False indicating the user does NOT have sufficient privs to encrypt
+		eligible = False	# initialize variable to False indicating the user does NOT have sufficient privs to execute action
 		print "User's group is " + group
 		for element in root.findall('Rule'):
 			# action should be permit if the user is authorized to execute the enc/dec operation
@@ -27,6 +26,7 @@ class xacmlparser:
 			ruleId =  element.get('RuleId')
 			if ruleId == "Encrypt":
 				# Rule -> Target -> Subjects -> Subject -> SubjectMatch -> AttributeValue.text == admin or attacker
+				# findall supports XPath syntax
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
 					# assigns the value of the user within the 
 					if attr.text == "admin" or attr.text == "attacker":
@@ -49,7 +49,8 @@ def main():
 	e = xml.etree.ElementTree.parse('rights.xacml')
 	x = xacmlparser()
 	root = e.getroot()
-	x.parse_encrypt(root,"admin")
+	execute = x.parse_action(root,"admin","Encrypt")
+	print "Execute is " + str(execute)
 	
 
 
