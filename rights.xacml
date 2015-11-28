@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- based on: https://www.oasis-open.org/committees/download.php/2713/Brief_Introduction_to_XACML.html#xacml-example-->
+<!-- also based on: http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.pdf -->
+<Policy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   PolicyId="action:rights"
+   Version="1.0"
+   RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+  <Description>Access rights for users to encrypt or decrypt files</Description>
+  <!--Rule to determine whether authenticated users have the ability to encrypt-->
+  <Rule RuleId="Encrypt" Effect="Permit">
+    <Target>
+      <!--Groups that can encrypt: 'admin' and 'attacker' -->
+      <Subjects>
+        <Subject>
+          <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+          </SubjectMatch>
+        </Subject>
+        <Subject>
+          <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">attacker</AttributeValue>
+          </SubjectMatch>
+        </Subject>
+      </Subjects>
+      <!-- any files can be encrypted -->
+      <Resources>
+        <AnyResource/>
+      </Resources>
+      <!-- This is the rule for encryption, the action is to encrypt -->
+      <Actions>
+        <Action MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">encrypt</AttributeValue>
+          <ActionAttributeDesignator DataType="http://www.w3.org/2001/XMLSchema#string" AttributeId="EncryptFiles"/>
+        </Action>
+      </Actions>
+    </Target>
+  </Rule>
+  <Rule RuleId="Decrypt" Effect="Permit">
+    <Target>
+      <!--Groups that can decrypt: 'admin' and 'user' -->
+      <Subjects>
+        <Subject>
+          <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+          </SubjectMatch>
+        </Subject>
+        <Subject>
+          <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">user</AttributeValue>
+          </SubjectMatch>
+        </Subject>
+      </Subjects>
+      <!-- any files can be decrypted -->
+      <Resources>
+        <AnyResource/>
+      </Resources>
+      <!-- This is the rule for decryption, the action is to decrypt -->
+      <Actions>
+        <Action MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">decrypt</AttributeValue>
+          <ActionAttributeDesignator DataType="http://www.w3.org/2001/XMLSchema#string" AttributeId="DecryptFiles"/>
+        </Action>
+      </Actions>
+    </Target>
+  </Rule>
+</Policy>
