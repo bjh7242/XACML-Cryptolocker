@@ -13,7 +13,8 @@ class xacmlparser:
 			Determines whether a user is authorized to encrypt files
 			@root - an xml.etree.ElementTree.parse(xacmlfile).getroot() object
 			@group - the name of the group that the user is a member of (from shadow file)
-			@action - the action to perform (encrypt/decrypt)
+			@action - the action to perform (must be Encrypt/Decrypt, case sensitive)
+			return - True if the user is authorized to perform action, False if not
 		"""
 		eligible = False	# initialize variable to False indicating the user does NOT have sufficient privs to execute action
 		print "User's group is " + group
@@ -23,8 +24,9 @@ class xacmlparser:
 				action = True
 			else:
 				action = False
+			# get RuleId attribute (will be either Encrypt or Decrypt)
 			ruleId =  element.get('RuleId')
-			if ruleId == "Encrypt":
+			if ruleId == "Encrypt" and action == "Encrypt":
 				# Rule -> Target -> Subjects -> Subject -> SubjectMatch -> AttributeValue.text == admin or attacker
 				# findall supports XPath syntax
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
@@ -32,7 +34,7 @@ class xacmlparser:
 					if attr.text == "admin" or attr.text == "attacker":
 						print group + " is eligible to encrypt"
 						eligible = True
-			elif ruleId == "Decrypt":
+			elif ruleId == "Decrypt" and action == "Decrypt":
 				pass
 			else:
 				# if someone modified the XACML file and added another rule, throw error and exit
