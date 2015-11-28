@@ -10,6 +10,7 @@ import os
 class auth:
 	login = False
 	username = ''
+	group = ''
 	passhash = ''
 
 	def attempt_login(self):
@@ -31,6 +32,7 @@ class auth:
 					if tmp.split(':')[1] == passhash:
 						self.passhash = passhash
 						self.login = True
+						self.group = tmp.split(':')[8]
 	
 		return self.login
 	
