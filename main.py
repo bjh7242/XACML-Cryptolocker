@@ -128,8 +128,7 @@ def main():
 	root = e.getroot()
 
 	# parse_action will return True if the user is authorized to perform the requested action
-	execute = x.parse_action(root,login.username,action)
-	print "execute = " + str(execute)
+	execute = x.parse_action(root,login.group,action)
 
 	if execute:
 		perform_action(args)
