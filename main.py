@@ -3,9 +3,10 @@
 import os
 import sys
 import argparse
+import xml.etree.ElementTree
 from rc4 import rc4
 from auth import auth
-from xacml-parse import xacmlparser
+from xacmlparser import xacmlparser
 
 def get_file_list(directory, recurse):
 	"""
@@ -107,16 +108,34 @@ def main():
 	login = auth()
 	login.attempt_login()
 	
-	# check authorization for requested action here (attacker can encrypt, admin can enc/dec, etc)
-	
 	# if the login creds were not correct, exit the program
 	if login.login == False:
 		print "Unsuccessful login."
 		sys.exit(1)
 
-	perform_action(args)
+	# check if the action is either "encrypt" or "decrypt"
+	if args.action == "encrypt":
+		action = "Encrypt"
+	elif args.action == "decrypt":
+		action = "Decrypt"
+	else:
+		print "ERROR: the -A flag should have an argument of either encrypt or decrypt (case sensitive)"
+		sys.exit(1)
 
+	# check authorization for requested action here (attacker can encrypt, admin can enc/dec, etc)
+	x = xacmlparser()
+	e = xml.etree.ElementTree.parse('rights.xacml')
+	root = e.getroot()
 
+	# parse_action will return True if the user is authorized to perform the requested action
+	execute = x.parse_action(root,login.username,action)
+	print "execute = " + str(execute)
+
+	if execute:
+		perform_action(args)
+	else:
+		print "User is not authorized to perform the requested action"
+		sys.exit(1)
 
 if __name__ == '__main__':
 	sys.exit(main())
