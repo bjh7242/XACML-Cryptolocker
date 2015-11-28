@@ -5,6 +5,7 @@ import sys
 import argparse
 from rc4 import rc4
 from auth import auth
+from xacml-parse import xacmlparser
 
 def get_file_list(directory, recurse):
 	"""
