@@ -3,7 +3,7 @@
 <!-- also based on: http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.pdf -->
 <Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 xacml-core-v3-schema-wd-17.xsd" 
+   xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 xacml-core-v3-schema-wd-17.xsd"
    PolicyId="action:rights"
    Version="1.0"
    RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
@@ -16,16 +16,18 @@
         <Subject>
           <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
             <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+          </SubjectMatch>
         </Subject>
         <Subject>
           <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
             <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">attacker</AttributeValue>
+          </SubjectMatch>
         </Subject>
-      <Subjects>
+      </Subjects>
       <!-- any files can be encrypted -->
       <Resources>
         <AnyResource/>
-      <Resource>
+      </Resources>
       <!-- This is the rule for encryption, the action is to encrypt -->
       <Actions>
         <Action MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
@@ -42,16 +44,18 @@
         <Subject>
           <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
             <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+          </SubjectMatch>
         </Subject>
         <Subject>
           <SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
             <AttributeValue DataType="https://www.w3.org/2001/XMLSchema#string">user</AttributeValue>
+          </SubjectMatch>
         </Subject>
-      <Subjects>
+      </Subjects>
       <!-- any files can be decrypted -->
       <Resources>
         <AnyResource/>
-      <Resource>
+      </Resources>
       <!-- This is the rule for decryption, the action is to decrypt -->
       <Actions>
         <Action MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
