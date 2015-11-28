@@ -20,7 +20,6 @@ class xacmlparser:
 		dec_groups = ['admin','user']		# groups that are allowed to decrypt files
 
 		eligible = False	# initialize variable to False indicating the user does NOT have sufficient privs to execute action
-		print "User's group is " + group
 
 		for element in root.findall('Rule'):
 			# effect should be permit if the user is authorized to execute the enc/dec operation
@@ -33,10 +32,6 @@ class xacmlparser:
 			# we might need a for loop and a findall to get the rule ID, this might be an issue with decrypt (since it is second)
 			ruleId =  element.get('RuleId')
 			
-			# test output
-			#print "element.get('Effect') = " + element.get('Effect')
-			print "ruleId = " + ruleId
-			print "action = " + action
 			if ruleId == "Encrypt" and action == "Encrypt":
 				#print "RuleId and action are both ENCRYPT"
 				# Rule -> Target -> Subjects -> Subject -> SubjectMatch -> AttributeValue.text == admin or attacker
@@ -44,7 +39,7 @@ class xacmlparser:
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
 					# assigns the value of the user within the 
 					if group in enc_groups and group == attr.text:
-						print group + " is eligible to encrypt"
+						#print group + " is eligible to encrypt"
 						# user is eligible to perform the requested encryption operation
 						eligible = True
 						if authorized == True and eligible == True:
@@ -56,18 +51,17 @@ class xacmlparser:
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
 					# assigns the value of the user within the 
 					if group in dec_groups and group == attr.text:
-						print group + " is eligible to decrypt"
+						#print group + " is eligible to decrypt"
 						# user is eligible to perform the requested decryption operation
 						eligible = True
 						if authorized == True and eligible == True:
 							return True
 			else:
 				# if the ruleId and action do not match, pass
-				print "Passing..."
 				pass
 
 		# return false by default so that the user is not eligible to perform the operation
-		print "User in group " + group + " is not eligible to " + action
+		#print "User in group " + group + " is not eligible to " + action
 		return False
 
 def main():
