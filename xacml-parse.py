@@ -32,32 +32,49 @@ class xacmlparser:
 			# get RuleId attribute (will be either Encrypt or Decrypt)
 			# we might need a for loop and a findall to get the rule ID, this might be an issue with decrypt (since it is second)
 			ruleId =  element.get('RuleId')
+			
+			# test output
+			#print "element.get('Effect') = " + element.get('Effect')
+			print "ruleId = " + ruleId
+			print "action = " + action
 			if ruleId == "Encrypt" and action == "Encrypt":
+				#print "RuleId and action are both ENCRYPT"
 				# Rule -> Target -> Subjects -> Subject -> SubjectMatch -> AttributeValue.text == admin or attacker
 				# findall supports XPath syntax
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
 					# assigns the value of the user within the 
-					if attr.text in enc_groups:
+					if group in enc_groups:
 						print group + " is eligible to encrypt"
 						# user is eligible to perform the requested encryption operation
 						eligible = True
 						if authorized == True and eligible == True:
 							return True
 			elif ruleId == "Decrypt" and action == "Decrypt":
-				print "Decryption operation requested"
+				#print "RuleId and action are both DECRYPT"
+				# Rule -> Target -> Subjects -> Subject -> SubjectMatch -> AttributeValue.text == admin or attacker
+				# findall supports XPath syntax
+				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
+					# assigns the value of the user within the 
+					if attr.text in dec_groups:
+						print group + " is eligible to decrypt"
+						# user is eligible to perform the requested decryption operation
+						eligible = True
+						if authorized == True and eligible == True:
+							return True
 			else:
-				# if someone modified the XACML file and added another rule, throw error and exit
-				print "Error: unknown rule ID"
-				sys.exit(1)
+				# if the ruleId and action do not match, pass
+				print "Passing..."
+				pass
 
 		# return false by default so that the user is not eligible to perform the operation
+		print "User in group " + group + " is not eligible to " + action
 		return False
 
 def main():
 	e = xml.etree.ElementTree.parse('rights.xacml')
 	x = xacmlparser()
 	root = e.getroot()
-	execute = x.parse_action(root,"admin","Encrypt")
+	execute = x.parse_action(root,"attacker","Decrypt")
 	print "Execute is " + str(execute)
 	
 if __name__ == '__main__':
