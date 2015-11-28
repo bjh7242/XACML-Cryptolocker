@@ -64,12 +64,3 @@ class xacmlparser:
 		#print "User in group " + group + " is not eligible to " + action
 		return False
 
-def main():
-	e = xml.etree.ElementTree.parse('rights.xacml')
-	x = xacmlparser()
-	root = e.getroot()
-	execute = x.parse_action(root,"admin","Encrypt")
-	print "Execute is " + str(execute)
-	
-if __name__ == '__main__':
-	sys.exit(main())
