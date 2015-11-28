@@ -43,7 +43,7 @@ class xacmlparser:
 				# findall supports XPath syntax
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
 					# assigns the value of the user within the 
-					if group in enc_groups:
+					if group in enc_groups and group == attr.text:
 						print group + " is eligible to encrypt"
 						# user is eligible to perform the requested encryption operation
 						eligible = True
@@ -55,7 +55,7 @@ class xacmlparser:
 				# findall supports XPath syntax
 				for attr in element.findall('Target/Subjects/Subject/SubjectMatch/AttributeValue'):
 					# assigns the value of the user within the 
-					if attr.text in dec_groups:
+					if group in dec_groups and group == attr.text:
 						print group + " is eligible to decrypt"
 						# user is eligible to perform the requested decryption operation
 						eligible = True
@@ -74,7 +74,7 @@ def main():
 	e = xml.etree.ElementTree.parse('rights.xacml')
 	x = xacmlparser()
 	root = e.getroot()
-	execute = x.parse_action(root,"attacker","Decrypt")
+	execute = x.parse_action(root,"admin","Encrypt")
 	print "Execute is " + str(execute)
 	
 if __name__ == '__main__':
