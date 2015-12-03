@@ -19,7 +19,7 @@ class auth:
         Shadow file format:
             username:password hash:date last pass change:min password age:max pass age:pass warning period:pass inactivity period:account expeiration date:reserved field
             Note: the 'reserved field' contains the roles for each user (used for the XACML permissions)
-        @param self The object pointer
+        @param self The object 
         @return True for successful authentication, False for unsuccessful
         """
         self.username = raw_input("Enter Username: ")
@@ -40,7 +40,7 @@ class auth:
     def update_password(self,newhash):
         """
         Permit an authenticated user to update a password
-        @param self The object pointer
+        @param self The object 
         @param newhash String containing the hash of the new user password
         """
         # check that user is authenticated
@@ -64,7 +64,7 @@ class auth:
     def get_hash(self,password):
         """
         Gets the SHA512 hash of a specified password
-        @param self The object pointer
+        @param self The object 
         @param password String containing the password to hash
         @return The SHA512 hash string of a given password string
         """
