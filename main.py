@@ -20,14 +20,17 @@ def get_file_list(directory, recurse):
     # if directory recursion is not requested
     if recurse == False:
         filenames = os.listdir(directory)
+        print filenames
         # if the last character in the directory name is a '/', don't readd it to the file path
         if directory[-1:] == "/":
             for f in filenames:
-                if os.path.isdir(f) is not True:
+                if os.path.isdir(directory + f) is not True:
+                    print f + " is not a DIR1"
                     files.append(directory + f)
         else:
             for f in filenames:
-                if os.path.isdir(f) is not True:
+                if os.path.isdir(directory + "/" + f) is not True:
+                    print f + " is not a DIR"
                     files.append(directory + "/" + f)
 
     # if directory recursion is requested
@@ -35,17 +38,18 @@ def get_file_list(directory, recurse):
         for root, dirs, filenames in os.walk(directory):
             if root[-1:] == "/":
                 for f in filenames:
-                    if os.path.isdir(f) is not True:
+                    if os.path.isdir(directory + f) is not True:
                         files.append(root + f)
             else:
                 for f in filenames:
-                    if os.path.isdir(f) is not True:
+                    if os.path.isdir(directory + "/" + f) is not True:
                         files.append(root + "/" + f)
 
     else:
         print "Something weird happened."
         sys.exit(1)
 
+    print files
     return files
 
 def perform_action(args):
